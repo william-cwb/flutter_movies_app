@@ -4,13 +4,9 @@ The Movies Flutter App
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Steps to run project.
+1 - git clone
+2 - run in your terminal "flutter packages get"
+3 - cd lib/config && cp .config.example.dart config.dart
+4 - edit the file config.dart with yout API_KEY
+5 - run the project in emulator
