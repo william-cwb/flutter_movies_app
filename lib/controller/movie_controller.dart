@@ -9,12 +9,14 @@ class MovieController {
 
   List<MovieResume> _movieResume = List();
   List<MovieResume> get getMoviesResume => _movieResume;
-  Future<ApiResponse> fetchMoviesPlayingNow() async {
-    final ApiResponse response = await MoviesService.fetchMoviesNowPlaying();
+  Future<ApiResponse> fetchMoviesPlayingNow({int page = 1}) async {
+    print("pageRecebida: $page");
+    final ApiResponse response =
+        await MoviesService.fetchMoviesNowPlaying(page);
     if (response.ok) {
-      _movieResume = response.data['results']
+      _movieResume.addAll(response.data['results']
           .map<MovieResume>((json) => MovieResume.fromJson(json))
-          .toList();
+          .toList());
 
       return response;
     } else {

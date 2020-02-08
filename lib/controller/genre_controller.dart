@@ -7,20 +7,20 @@ class GenreController {
   factory GenreController() => _instance;
   GenreController.internal();
 
-  List<Genre> _genreList = List();
-  List<Genre> get getGenres => _genreList;
+  List<Genres> _genreList = List();
+  List<Genres> get getGenres => _genreList;
 
   void fetchGender() async {
     final ApiResponse response = await GenreService.fetchGenre();
     if (response.ok) {
       _genreList = response.data['genres']
-          .map<Genre>((json) => Genre.fromJson(json))
+          .map<Genres>((json) => Genres.fromJson(json))
           .toList();
     }
   }
 
   findInList(List<int> ids) {
-    List<Genre> genres = List();
+    List<Genres> genres = List();
     ids.map((id) {
       _genreList.map((data) {
         if (data.id == id) {

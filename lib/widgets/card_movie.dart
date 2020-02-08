@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:movies_flutter_app/constant/app_const.dart';
+import 'package:movies_flutter_app/config/config.dart';
 import 'package:movies_flutter_app/controller/genre_controller.dart';
 import 'package:movies_flutter_app/model/genres.dart';
 import 'package:movies_flutter_app/model/movie_resume.dart';
+import 'package:movies_flutter_app/utils/utils.dart';
 
 class CardMovie extends StatelessWidget {
   final MovieResume movieResume;
   final Function onClick;
-  GenreController controller = new GenreController();
+  final GenreController controller = new GenreController();
   CardMovie(this.movieResume, this.onClick);
 
   @override
   Widget build(BuildContext context) {
-    List<Genre> _genres = controller.findInList(movieResume.genreIds);
-
+    List<Genres> _genres = controller.findInList(movieResume.genreIds);
+    String urlImg = movieResume.posterPath != null
+        ? Config.base_url_img + movieResume.posterPath
+        : 'https://via.placeholder.com/500';
     return Card(
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
@@ -30,7 +33,7 @@ class CardMovie extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: Image.network(
-                      AppConst.base_url_img + movieResume.posterPath,
+                      urlImg,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -53,13 +56,13 @@ class CardMovie extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        _handleDate(movieResume.releaseDate),
+                        Utils.handleDate(movieResume.releaseDate),
                         style: TextStyle(
                           fontSize: 12,
                         ),
                       ),
                       SizedBox(height: 4),
-                      Text(_handleGenre(_genres)),
+                      Text(Utils.handleGenre(_genres)),
                       movieResume.adult
                           ? Text('Conteúdo adulto')
                           : SizedBox(height: 2),
@@ -79,22 +82,5 @@ class CardMovie extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  _handleGenre(List<Genre> genres) {
-    String text = '';
-    for (int i = 0; i < genres.length; i++) {
-      if ((i + 1 == genres.length)) {
-        text += genres.elementAt(i).name + '.';
-      } else {
-        text += genres.elementAt(i).name + ', ';
-      }
-    }
-
-    return text;
-  }
-
-  _handleDate(String releaseDate) {
-    return '${releaseDate.split("-")[2]}/${releaseDate.split("-")[1]}/${releaseDate.split("-")[0]}';
   }
 }

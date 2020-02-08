@@ -46,4 +46,9 @@ class MovieResume {
     overview = json['overview'];
     releaseDate = json['release_date'];
   }
+
+  @override
+  String toString() {
+    return super.toString();
+  }
 }

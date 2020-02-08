@@ -32,7 +32,7 @@
 
 # Web related
 lib/generated_plugin_registrant.dart
-lib//constant/api_key.dart
+lib/config/config.dart
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages

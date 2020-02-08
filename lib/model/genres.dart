@@ -1,10 +1,10 @@
-class Genre {
+class Genres {
   int id;
   String name;
 
-  Genre({this.id, this.name});
+  Genres({this.id, this.name});
 
-  Genre.fromJson(Map<String, dynamic> json) {
+  Genres.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

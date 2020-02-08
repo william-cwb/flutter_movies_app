@@ -3,6 +3,8 @@ import 'package:movies_flutter_app/controller/genre_controller.dart';
 import 'package:movies_flutter_app/controller/movie_controller.dart';
 import 'package:movies_flutter_app/model/movie_resume.dart';
 import 'package:movies_flutter_app/utils/api_response.dart';
+import 'package:movies_flutter_app/utils/nav.dart';
+import 'package:movies_flutter_app/views/movie.detail.dart';
 import 'package:movies_flutter_app/widgets/app_loading.dart';
 import 'package:movies_flutter_app/widgets/card_movie.dart';
 
@@ -14,25 +16,41 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   GenreController genreController = new GenreController();
   MovieController movieController = new MovieController();
-  ScrollController _controller = new ScrollController();
+  final ScrollController _controller = new ScrollController();
   ApiResponse _apiResponse;
   List<MovieResume> _moviesResume = List();
   bool _isLoading = false;
+  int page = 1;
   @override
   void initState() {
     super.initState();
-
+    _controller.addListener(() {
+      if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+        page = page + 1;
+        _fetchMore();
+      }
+    });
     _fetchData();
     _handleLoading();
   }
 
+  _fetchMore() async {
+    print("PAGE $page");
+    _apiResponse = await movieController.fetchMoviesPlayingNow(page: page);
+    if (_apiResponse.ok) {
+      _moviesResume.clear();
+      setState(() {
+        _moviesResume.addAll(movieController.getMoviesResume);
+      });
+    }
+  }
+
   _fetchData() async {
     genreController.fetchGender();
-    _apiResponse = await movieController.fetchMoviesPlayingNow();
+    _apiResponse = await movieController.fetchMoviesPlayingNow(page: page);
     if (_apiResponse.ok) {
       setState(() {
-        _moviesResume = movieController.getMoviesResume;
-        print(_moviesResume.toString());
+        _moviesResume.addAll(movieController.getMoviesResume);
         _handleLoading();
       });
     } else {
@@ -87,6 +105,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   _onClickMovie(MovieResume movieResume) {
-    print(movieResume.toString());
+    Nav.push(context, MovieDetail(movieResume));
   }
 }
